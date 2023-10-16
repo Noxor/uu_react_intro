@@ -1,19 +1,15 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from "./bricks/Header";
+import RecipeList from "./bricks/RecipeList";
 
-const logoPath = "./images/cover.jpg";
+let recipeList = require('./data/recipes.json');
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logoPath} className="App-logo" alt="logo" />
-        <p>
-          Prepare to be amazed be simple recipes
-        </p>
-        <p>
-          Cooming soon™
-        </p>
-      </header>
+      <Header></Header>
+      <RecipeList recipeList={recipeList} />
     </div>
   );
 }
