@@ -9,10 +9,6 @@ function RecipeList(props) {
     </div>);
 }
 
-function getRecipeList(recipeList) {
-    return recipeList.map((recipe) => {
-        return <RecipeCard key={recipe.id} recipe={recipe} />;
-    });
-}
+const getRecipeList = (recipeList) => recipeList.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />);
 
 export default RecipeList;
