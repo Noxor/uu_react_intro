@@ -1,6 +1,18 @@
-.customCard {
-    background-color: #212121;
-    color: white;
-    border-color: rgba(255, 255, 255, 0.2);
+.customCard:hover {
+    /* cursor: pointer; */
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+}
+
+.compact {
+    max-width: 250px;
+}
+
+.detailed {
     max-width: 400px;
+}
+
+.compact .cardText {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

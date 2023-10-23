@@ -1,7 +1,24 @@
-.wrapper{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 10px 10px;
+.container {
+    min-height: 100vh;
+}
+
+.navbar {
+    padding: 10px;
+    background-color: var(--bs-body-bg);
+}
+
+.navbar form {
+    width: 100%;
+}
+
+.navbar form button:first-of-type {
+    margin-right: 15px;
+}
+
+.navbar form button:not(:first-of-type) {
+    margin-left: 5px;
+}
+
+.contentWrapper {
     padding: 10px;
 }
