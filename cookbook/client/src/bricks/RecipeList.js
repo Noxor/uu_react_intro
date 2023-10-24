@@ -67,17 +67,17 @@ function RecipeList(props) {
                     </Button>
                     {viewType !== "compact" &&
                         <Button variant="outline-success"
-                            onClick={() => setViewType(() => "compact")}>
+                            onClick={() => setViewType("compact")}>
                             <Icon size={1} path={mdiViewGridCompact} />
                         </Button>}
                     {viewType !== "detailed" &&
                         <Button variant="outline-success"
-                            onClick={() => setViewType(() => "detailed")}>
+                            onClick={() => setViewType("detailed")}>
                             <Icon size={1} path={mdiViewGrid} />
                         </Button>}
                     {viewType !== "table" &&
                         <Button variant="outline-success"
-                            onClick={() => setViewType(() => "table")}>
+                            onClick={() => setViewType("table")}>
                             <Icon size={1} path={mdiTable} />
                         </Button>}
                 </Form>
