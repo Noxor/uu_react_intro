@@ -11,12 +11,8 @@
     width: 100%;
 }
 
-.navbar form button:first-of-type {
+.navbar form {
     margin-right: 15px;
-}
-
-.navbar form button:not(:first-of-type) {
-    margin-left: 5px;
 }
 
 .contentWrapper {

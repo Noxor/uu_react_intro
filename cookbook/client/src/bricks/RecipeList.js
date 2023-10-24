@@ -9,6 +9,8 @@ import { mdiMagnify, mdiTable, mdiViewGrid, mdiViewGridCompact } from "@mdi/js";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import ToggleButton from "react-bootstrap/ToggleButton";
 
 import styles from "../css/recipeList.module.css";
 
@@ -50,6 +52,7 @@ function RecipeList(props) {
         }
     }
 
+
     return (
         <div className={styles.container}>
             <Navbar sticky="top" className={styles.navbar}>
@@ -57,30 +60,29 @@ function RecipeList(props) {
                     <Form.Control
                         id={"searchInput"}
                         type="search"
-                        placeholder="Search"
+                        placeholder="Hledat"
                         className="me-2"
                         aria-label="Search"
                         onChange={handleSearchDelete}
                     />
-                    <Button variant="outline-success" type="submit">
+                    <Button variant="outline-primary" type="submit">
                         <Icon size={1} path={mdiMagnify} />
                     </Button>
-                    {viewType !== "compact" &&
-                        <Button variant="outline-success"
-                            onClick={() => setViewType("compact")}>
-                            <Icon size={1} path={mdiViewGridCompact} />
-                        </Button>}
-                    {viewType !== "detailed" &&
-                        <Button variant="outline-success"
-                            onClick={() => setViewType("detailed")}>
-                            <Icon size={1} path={mdiViewGrid} />
-                        </Button>}
-                    {viewType !== "table" &&
-                        <Button variant="outline-success"
-                            onClick={() => setViewType("table")}>
-                            <Icon size={1} path={mdiTable} />
-                        </Button>}
                 </Form>
+
+                <ToggleButtonGroup type="radio"
+                    name="view-options"
+                    value={viewType}>
+                    <ToggleButton variant="outline-primary" value="compact" onClick={() => setViewType("compact")}>
+                        <Icon size={1} path={mdiViewGridCompact} />
+                    </ToggleButton>
+                    <ToggleButton variant="outline-primary" value="detailed" onClick={() => setViewType("detailed")}>
+                        <Icon size={1} path={mdiViewGrid} />
+                    </ToggleButton>
+                    <ToggleButton variant="outline-primary" value="table" onClick={() => setViewType("table")}>
+                        <Icon size={1} path={mdiTable} />
+                    </ToggleButton>
+                </ToggleButtonGroup>
             </Navbar>
             <div className={styles.contentWrapper}>
                 {getRecipeListComponent()}
