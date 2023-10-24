@@ -9,6 +9,6 @@ function RecipeCompactList(props) {
     </div>);
 }
 
-const getRecipeList = (recipeList) => recipeList.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} type={"compact"} />);
+const getRecipeList = (recipeList) => recipeList.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} size="compact" showIngedients={true} />);
 
 export default RecipeCompactList;

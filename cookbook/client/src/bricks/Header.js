@@ -1,6 +1,8 @@
 import React from "react";
 import Icon from "@mdi/react";
-import { mdiChevronDown } from "@mdi/js";
+import { mdiChevronDown, mdiLoading } from "@mdi/js";
+
+import Card from "react-bootstrap/Card";
 
 import styles from "../css/header.module.css";
 
@@ -16,7 +18,15 @@ function Header(props) {
             <p>
                 More cooming soon™
             </p>
-            <Icon className={styles.scrollChevron} path={mdiChevronDown} size={3} />
+            {props.loadState.state === "success" && <Icon className={styles.scrollChevron} path={mdiChevronDown} size={3} />}
+            {props.loadState.state === "pending" && <Icon path={mdiLoading} spin={true} size={3} />}
+            {props.loadState.state === "error" &&
+                <Card className={styles.errorCard}><Card.Body>
+                    <Card.Title>Došlo k chybě při načítání dat.</Card.Title>
+                    <Card.Text>
+                        <pre>{JSON.stringify(props.loadState.error, null, 2)}</pre>
+                    </Card.Text></Card.Body>
+                </Card>}
         </header>
     );
 }
