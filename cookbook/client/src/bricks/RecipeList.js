@@ -38,7 +38,6 @@ function RecipeList(props) {
         if (!event.target.value) setSearchBy("");
     }
 
-
     function getRecipeListComponent() {
         switch (viewType) {
             case "compact":
@@ -52,7 +51,6 @@ function RecipeList(props) {
         }
     }
 
-
     return (
         <div className={styles.container}>
             <Navbar sticky="top" className={styles.navbar}>
@@ -65,7 +63,7 @@ function RecipeList(props) {
                         aria-label="Search"
                         onChange={handleSearchDelete}
                     />
-                    <Button variant="outline-primary" type="submit">
+                    <Button variant="outline-success" type="submit">
                         <Icon size={1} path={mdiMagnify} />
                     </Button>
                 </Form>
@@ -73,13 +71,13 @@ function RecipeList(props) {
                 <ToggleButtonGroup type="radio"
                     name="view-options"
                     value={viewType}>
-                    <ToggleButton variant="outline-primary" value="compact" onClick={() => setViewType("compact")}>
+                    <ToggleButton variant="outline-success" value="compact" onClick={() => setViewType("compact")}>
                         <Icon size={1} path={mdiViewGridCompact} />
                     </ToggleButton>
-                    <ToggleButton variant="outline-primary" value="detailed" onClick={() => setViewType("detailed")}>
+                    <ToggleButton variant="outline-success" value="detailed" onClick={() => setViewType("detailed")}>
                         <Icon size={1} path={mdiViewGrid} />
                     </ToggleButton>
-                    <ToggleButton variant="outline-primary" value="table" onClick={() => setViewType("table")}>
+                    <ToggleButton variant="outline-success" value="table" onClick={() => setViewType("table")}>
                         <Icon size={1} path={mdiTable} />
                     </ToggleButton>
                 </ToggleButtonGroup>
