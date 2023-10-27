@@ -14,7 +14,7 @@ function RecipeCard(props) {
             </Card.Body>
             {props.showIngedients &&
                 <ListGroup variant="flush">
-                    {props.recipe.ingredients.map(i => <ListGroup.Item>{i.name}</ListGroup.Item>)}
+                    {props.recipe.ingredients.map(i => <ListGroup.Item key={i.id}>{i.name}</ListGroup.Item>)}
                 </ListGroup>
             }
         </Card>
