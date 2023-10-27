@@ -21,11 +21,11 @@ function Header(props) {
             {props.loadState.state === "success" && <Icon className={styles.scrollChevron} path={mdiChevronDown} size={3} />}
             {props.loadState.state === "pending" && <Icon path={mdiLoading} spin={true} size={3} />}
             {props.loadState.state === "error" &&
-                <Card className={styles.errorCard}><Card.Body>
-                    <Card.Title>Došlo k chybě při načítání dat.</Card.Title>
-                    <Card.Text>
+                <Card className={styles.errorCard}>
+                    <Card.Body>
+                        <Card.Title>Došlo k chybě při načítání dat.</Card.Title>
                         <pre>{JSON.stringify(props.loadState.error, null, 2)}</pre>
-                    </Card.Text></Card.Body>
+                    </Card.Body>
                 </Card>}
         </header>
     );
