@@ -153,7 +153,7 @@ function RecipeForm({ ingredientList, show, setShow }) {
 
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} backdrop="static">
                 <Form onSubmit={(e) => handleSubmit(e)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Vytvořit recept</Modal.Title>
