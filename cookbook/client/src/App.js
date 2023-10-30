@@ -1,89 +1,46 @@
-import './App.css';
-import { useEffect, useState, useMemo } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from "./bricks/Header";
-import RecipeList from "./bricks/RecipeList";
+import { Outlet, useNavigate } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import Offcanvas from "react-bootstrap/Offcanvas";
+import { Button } from "react-bootstrap";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  const [recipesLoadCall, setRecipesLoadCall] = useState({
-    state: "pending",
-  });
-
-  const [ingredientsLoadCall, setIngredientsLoadCall] = useState({
-    state: "pending",
-  });
-
-  useEffect(() => {
-    loadJsonData(`http://localhost:8000/recipe/list`, setRecipesLoadCall);
-  }, []);
-
-  useEffect(() => {
-    loadJsonData(`http://localhost:8000/ingredient/list`, setIngredientsLoadCall);
-  }, []);
-
-  const mergedRecipeList = useMemo(() => {
-    console.log("Merging recipes");
-    if (combineStates([recipesLoadCall, ingredientsLoadCall]).state !== "success") {
-      return [];
-    }
-
-    return recipesLoadCall.data.map(recipe => {
-      return {
-        ...recipe, ingredients: recipe.ingredients.map(ingredient => {
-          return {
-            ...ingredient, name: ingredientsLoadCall.data.find(i => i.id === ingredient.id)?.name ?? "Zkuste Štestí"
-          }
-        })
-      }
-    });
-
-
-  }, [recipesLoadCall, ingredientsLoadCall]);
-
-  const combineState = combineStates([recipesLoadCall, ingredientsLoadCall]);
+  let navigate = useNavigate();
 
   return (
-    <div className="App">
-      <Header loadState={combineState}></Header>
-      {combineState.state === "success" && <RecipeList recipeList={mergedRecipeList} />}
-    </div>
+    <>
+      <Navbar
+        sticky="top"
+        expand={"sm"}
+        className="bg-secondary"
+      >
+        <Container fluid>
+          <Navbar.Brand role="button" onClick={() => navigate("/")}>
+            Každodenní recepty
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
+          <Navbar.Offcanvas id={`offcanvasNavbar-expand-sm`}>
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
+                Každodenní recepty
+              </Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Nav className="justify-content-end flex-grow-1">
+                <Button className="m-1" variant="primary" onClick={() => navigate("/recipes")}>Recepty</Button>
+                <Button className="m-1" variant="success" onClick={() => navigate("/ingredients")}>Ingredience</Button>
+              </Nav>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
+        </Container>
+      </Navbar>
+
+      <Outlet />
+    </>
   );
-}
-
-const combineStates = (sourceStates) => {
-  const errorStates = sourceStates.filter(s => s.state === "error");
-  if (errorStates.length > 0) {
-    return { state: "error", error: errorStates.map(e => e.error) };
-  }
-
-  if (sourceStates.filter(s => s.state === "pending").length > 0) {
-    return { state: "pending" }
-  }
-
-  return { state: "success" }
-};
-
-const loadJsonData = async (url, updateState) => {
-  try {
-    let response = await fetch(url);
-    let responseContent = "";
-    try {
-      responseContent = await response.text();
-      responseContent = JSON.parse(responseContent);
-    } catch (error) {
-      updateState({ state: "error", error: { reason: "Unexpected server response", text: responseContent } });
-      return;
-    }
-
-    if (response.status >= 400) {
-      updateState({ state: "error", error: responseContent });
-    } else {
-      updateState({ state: "success", data: responseContent });
-    }
-  } catch (error) {
-    debugger;
-    updateState({ state: "error", error: { reason: "Unexpected error", data: error } });
-  }
 }
 
 export default App;

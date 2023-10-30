@@ -14,21 +14,12 @@
 }
 
 .appHeader {
-    min-height: 100vh;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: calc(10px + 2vmin);
-}
-
-.errorCard {
-    background-color: var(--bs-danger-bg-subtle);
-    border-color: var(--bs-danger-border-subtle);
-    color: var(--bs-danger-text-emphasis);
-    margin: 10px;
-    font-size: initial;
-    max-width: calc(100% - 20px);
 }
 
 @keyframes App-logo-pulse {

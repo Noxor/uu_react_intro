@@ -1,0 +1,12 @@
+.loadContainer {
+    text-align: center;
+}
+
+.errorCard {
+    background-color: var(--bs-danger-bg-subtle);
+    border-color: var(--bs-danger-border-subtle);
+    color: var(--bs-danger-text-emphasis);
+    margin: 10px;
+    font-size: initial;
+    max-width: calc(100% - 20px);
+}

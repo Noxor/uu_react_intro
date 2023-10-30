@@ -1,14 +1,15 @@
 import React from "react";
 import RecipeCard from "./RecipeCard";
 
-import styles from "../css/recipeCardList.module.css";
-
 function RecipeDetailedList(props) {
-    return (<div className={styles.container}>
+    return (<div className="row">
         {getRecipeList(props.recipeList)}
     </div>);
 }
 
-const getRecipeList = (recipeList) => recipeList.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} size={"detailed"} />);
+const getRecipeList = (recipeList) => recipeList.map((recipe) =>
+    <div key={recipe.id} className="mb-3 col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 col-xxl-3">
+        <RecipeCard recipe={recipe} size="detailed" />
+    </div>);
 
 export default RecipeDetailedList;

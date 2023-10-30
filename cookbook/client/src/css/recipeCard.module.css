@@ -7,14 +7,6 @@
     flex: initial;
 }
 
-.compact {
-    max-width: 250px;
-}
-
-.detailed {
-    max-width: 400px;
-}
-
 .compact .cardText {
     white-space: nowrap;
     text-overflow: ellipsis;

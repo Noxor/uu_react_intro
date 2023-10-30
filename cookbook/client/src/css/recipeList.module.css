@@ -1,18 +1,11 @@
-.container {
-    min-height: 100vh;
-}
-
 .navbar {
     padding: 10px;
     background-color: var(--bs-body-bg);
+    flex-wrap: nowrap;
 }
 
 .navbar form {
     width: 100%;
-}
-
-.navbar form {
-    margin-right: 15px;
 }
 
 .contentWrapper {
