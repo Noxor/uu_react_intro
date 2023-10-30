@@ -1,0 +1,24 @@
+.ingredientRow>* {
+    padding: 0 5px;
+}
+
+.ingredientRow>*:first-child {
+    padding-left: 10px;
+}
+
+.ingredientRow>*:last-child {
+    padding-right: 10px;
+    text-align: center;
+}
+
+.ingredientRow>*:last-child>* {
+    vertical-align: -webkit-baseline-middle;
+}
+
+.deleteButton{    
+    color: var(--bs-danger);
+}
+
+.addButton{    
+    color: var(--bs-success);
+}

@@ -17,6 +17,7 @@ import RecipeCompactList from "../bricks/RecipeCompactList";
 import RecipeDetailedList from "../bricks/RecipeDetailedList";
 import RecipeTableList from "../bricks/RecipeTableList";
 import RouteLoaderPlaceholder from "../bricks/RouteLoaderPlaceholder";
+import RecipeForm from "../bricks/RecipeForm";
 
 import { loadJsonData } from "../helpers/restLoader";
 
@@ -25,6 +26,7 @@ import styles from "../css/recipeList.module.css";
 function RecipeList() {
     const [viewType, setViewType] = useState("detailed");
     const [searchBy, setSearchBy] = useState("");
+    const [createRecipeShow, setCreateRecipeShow] = useState(false);
     const [recipesLoadCall, setRecipesLoadCall] = useState({
         state: "pending",
     });
@@ -38,7 +40,11 @@ function RecipeList() {
     }, []);
 
     useEffect(() => {
-        loadJsonData(`http://localhost:8000/ingredient/list`, setIngredientsLoadCall);
+        loadJsonData(`http://localhost:8000/ingredient/list`, (callData) => {
+        if(callData.data){
+            callData.data.sort((a, b) => a.name.localeCompare(b.name));
+        }    
+        setIngredientsLoadCall(callData)});
     }, []);
 
     const mergedRecipeList = useMemo(() => {
@@ -143,7 +149,9 @@ function RecipeList() {
                                     <Icon size={1} path={mdiViewGridCompact} />
                                 </ToggleButton>
                             </ToggleButtonGroup>
-                            <Button variant="outline-primary" className="text-nowrap m-1">
+                            <Button variant="outline-primary"
+                                className="text-nowrap m-1"
+                                onClick={() => setCreateRecipeShow(true)}>
                                 <Icon size={1} path={mdiPlus} />
                                 Vytvořit recept
                             </Button>
@@ -155,6 +163,11 @@ function RecipeList() {
                 <RouteLoaderPlaceholder loadState={combinedStates} />
                 {getRecipeListComponent()}
             </div>
+            {createRecipeShow && <RecipeForm
+                ingredientList={ingredientsLoadCall.data ?? []}
+                show={createRecipeShow}
+                setShow={setCreateRecipeShow}
+            />}
         </>
     );
 }
