@@ -1,5 +1,5 @@
 //import './App.css';
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useContext } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Icon from "@mdi/react";
@@ -18,12 +18,14 @@ import RecipeDetailedList from "../bricks/RecipeDetailedList";
 import RecipeTableList from "../bricks/RecipeTableList";
 import RouteLoaderPlaceholder from "../bricks/RouteLoaderPlaceholder";
 import RecipeForm from "../bricks/RecipeForm";
+import UserContext from "../UserProvider";
 
 import { loadJsonData } from "../helpers/restLoader";
 
 import styles from "../css/recipeList.module.css";
 
 function RecipeList() {
+    const { isAuthorized } = useContext(UserContext)
     const [viewType, setViewType] = useState("detailed");
     const [searchBy, setSearchBy] = useState("");
     const [recipeFormShow, setRecipeFormShow] = useState({ show: false });
@@ -92,20 +94,20 @@ function RecipeList() {
     function getRecipeListComponent() {
         switch (viewType) {
             case "compact":
-                return (<RecipeCompactList recipeList={filteredRecipeList} edit={editRecipe} />);
+                return (<RecipeCompactList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />);
             case "detailed":
-                return (<RecipeDetailedList recipeList={filteredRecipeList} edit={editRecipe} />);
+                return (<RecipeDetailedList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />);
             case "table":
                 return (<>
                     <div className="d-none d-sm-block">
-                        <RecipeTableList recipeList={filteredRecipeList} edit={editRecipe} />
+                        <RecipeTableList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />
                     </div>
                     <div className="d-block d-sm-none">
-                        <RecipeDetailedList recipeList={filteredRecipeList} edit={editRecipe} />
+                        <RecipeDetailedList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />
                     </div>
                 </>);
             default:
-                return (<RecipeDetailedList recipeList={filteredRecipeList} edit={editRecipe} />);
+                return (<RecipeDetailedList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />);
         }
     }
 
@@ -138,6 +140,8 @@ function RecipeList() {
         setRecipeFormShow({ show: true, recipe: recipesLoadCall.data.find(r => r.id === id) });
     }
 
+    const getEditRecipeFunction = () => isAuthorized ? editRecipe : null;
+
     return (
         <>
             <Navbar sticky="top" className={`${styles.navbar} ${styles.controlWrapper}`} expand={"sm"}>
@@ -160,7 +164,7 @@ function RecipeList() {
                 <Navbar.Offcanvas id={`offcanvasNavbar-expand-sm1`}>
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm1`}>
-                            Simple School
+                            Seznam receptů
                         </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
@@ -179,12 +183,13 @@ function RecipeList() {
                                     <Icon size={1} path={mdiViewGridCompact} />
                                 </ToggleButton>
                             </ToggleButtonGroup>
-                            <Button variant="outline-primary"
-                                className="text-nowrap m-1"
-                                onClick={() => setRecipeFormShow({ show: true })}>
-                                <Icon size={1} path={mdiPlus} />
-                                Vytvořit
-                            </Button>
+                            {isAuthorized &&
+                                <Button variant="outline-primary"
+                                    className="text-nowrap m-1"
+                                    onClick={() => setRecipeFormShow({ show: true })}>
+                                    <Icon size={1} path={mdiPlus} />
+                                    Vytvořit
+                                </Button>}
                             <Button variant="outline-success"
                                 className="text-nowrap m-1"
                                 onClick={reloadRecipes}>
