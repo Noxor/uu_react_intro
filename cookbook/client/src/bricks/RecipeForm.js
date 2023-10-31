@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { toast } from 'react-toastify';
 
@@ -13,7 +13,7 @@ import { mdiDelete, mdiPlus, mdiOpenInNew, mdiLoading } from "@mdi/js";
 
 import styles from "../css/recipeForm.module.css";
 
-function RecipeForm({ ingredientList, show, setShow, onComplete }) {
+function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
     const defaultForm = {
         name: "",
         imgUri: "",
@@ -35,9 +35,22 @@ function RecipeForm({ ingredientList, show, setShow, onComplete }) {
         state: 'inactive'
     });
 
-    const handleClose = () => setShow(false);
+    useEffect(() => {
+        if (recipe?.id) {
+            setFormData(copyFormDate(recipe));
+        } else {
+            setFormData(defaultForm);
+            setExtraIngredient(defaultIngredient);
+        }
+    }, [recipe]);
 
-    const copyFormDate = (formData) => ({ ...formData, ingredients: formData.ingredients.map(i => ({ ...i })) });
+    const handleClose = () => {
+        setFormData(defaultForm);
+        setExtraIngredient(defaultIngredient);
+        setShow({ show: false });
+    }
+
+    const copyFormDate = (formData) => ({ ...formData, ingredients: (formData.ingredients ?? []).map(i => ({ ...i })) });
 
     const setMainField = (name, val) => {
         return setFormData((formData) => {
@@ -114,7 +127,7 @@ function RecipeForm({ ingredientList, show, setShow, onComplete }) {
         console.log(payload);
 
         setCreateRecipeCall({ state: 'pending' });
-        const res = await fetch(`http://localhost:8000/recipe/create`, {
+        const res = await fetch(`http://localhost:8000/recipe/${payload.id ? "update" : "create"}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -225,7 +238,7 @@ function RecipeForm({ ingredientList, show, setShow, onComplete }) {
             <Modal show={show} onHide={handleClose} backdrop="static">
 
                 <Modal.Header closeButton>
-                    <Modal.Title>Vytvořit recept</Modal.Title>
+                    <Modal.Title>{recipe?.id ? "Upravit" : "Vytvořit"} recept</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form id="recipeform" noValidate validated={recipeValidated} onSubmit={(e) => handleFormSubmit(e)}>
@@ -314,7 +327,7 @@ function RecipeForm({ ingredientList, show, setShow, onComplete }) {
                                 {createRecipeCall.state === 'pending' ? (
                                     <Icon size={0.8} path={mdiLoading} spin={true} />
                                 ) : (
-                                    "Vytvořit"
+                                    recipe?.id ? "Upravit" : "Vytvořit"
                                 )}
                             </Button>
                         </div>

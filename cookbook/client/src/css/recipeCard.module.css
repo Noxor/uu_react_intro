@@ -23,3 +23,12 @@
     aspect-ratio: 2;
     object-fit: cover;
 }
+
+.editButton {
+    position: absolute;
+    background: rgba(0, 0, 0, .32);
+    backdrop-filter: blur(4px);
+    right: calc(var(--bs-gutter-x) * .5);
+    top: calc(var(--bs-gutter-x) * .5);
+    ;
+}

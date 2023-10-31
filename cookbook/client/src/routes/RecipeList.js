@@ -26,7 +26,7 @@ import styles from "../css/recipeList.module.css";
 function RecipeList() {
     const [viewType, setViewType] = useState("detailed");
     const [searchBy, setSearchBy] = useState("");
-    const [createRecipeShow, setCreateRecipeShow] = useState(false);
+    const [recipeFormShow, setRecipeFormShow] = useState({ show: false });
     const [recipesLoadCall, setRecipesLoadCall] = useState({
         state: "pending",
     });
@@ -92,30 +92,50 @@ function RecipeList() {
     function getRecipeListComponent() {
         switch (viewType) {
             case "compact":
-                return (<RecipeCompactList recipeList={filteredRecipeList} />);
+                return (<RecipeCompactList recipeList={filteredRecipeList} edit={editRecipe} />);
             case "detailed":
-                return (<RecipeDetailedList recipeList={filteredRecipeList} />);
+                return (<RecipeDetailedList recipeList={filteredRecipeList} edit={editRecipe} />);
             case "table":
                 return (<>
                     <div className="d-none d-sm-block">
-                        <RecipeTableList recipeList={filteredRecipeList} />
+                        <RecipeTableList recipeList={filteredRecipeList} edit={editRecipe} />
                     </div>
                     <div className="d-block d-sm-none">
-                        <RecipeDetailedList recipeList={filteredRecipeList} />
+                        <RecipeDetailedList recipeList={filteredRecipeList} edit={editRecipe} />
                     </div>
                 </>);
             default:
-                return (<RecipeDetailedList recipeList={filteredRecipeList} />);
+                return (<RecipeDetailedList recipeList={filteredRecipeList} edit={editRecipe} />);
         }
     }
 
-    const handlerecipeAdded = (recipe) => {
-        if (recipesLoadCall.state === "success") {
-            setRecipesLoadCall({
-                state: "success",
-                data: [...recipesLoadCall.data, recipe]
-            });
+    const handleRecipeUpdate = (recipe) => {
+        if (recipesLoadCall.state !== "success") {
+            return;
         }
+
+        setRecipesLoadCall((prev) => {
+            let arrayCopy = [...prev.data]
+            let index = arrayCopy.findIndex(r => r.id === recipe.id);
+            if (index < 0) {
+                index = arrayCopy.length;
+            } else {
+                arrayCopy.splice(index, 1)
+            }
+            arrayCopy.splice(index, 0, recipe);
+
+            return {
+                state: "success",
+                data: arrayCopy
+            }
+        });
+    }
+
+    const editRecipe = (e, id) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setRecipeFormShow({ show: true, recipe: recipesLoadCall.data.find(r => r.id === id) });
     }
 
     return (
@@ -161,7 +181,7 @@ function RecipeList() {
                             </ToggleButtonGroup>
                             <Button variant="outline-primary"
                                 className="text-nowrap m-1"
-                                onClick={() => setCreateRecipeShow(true)}>
+                                onClick={() => setRecipeFormShow({ show: true })}>
                                 <Icon size={1} path={mdiPlus} />
                                 Vytvořit
                             </Button>
@@ -178,11 +198,12 @@ function RecipeList() {
                 <RouteLoaderPlaceholder loadState={combinedStates} />
                 {getRecipeListComponent()}
             </div>
-            {createRecipeShow && <RecipeForm
+            {recipeFormShow.show && <RecipeForm
                 ingredientList={ingredientsLoadCall.data ?? []}
-                show={createRecipeShow}
-                setShow={setCreateRecipeShow}
-                onComplete={(recipe) => handlerecipeAdded(recipe)}
+                recipe={recipeFormShow.recipe}
+                show={recipeFormShow.show}
+                setShow={setRecipeFormShow}
+                onComplete={handleRecipeUpdate}
             />}
         </>
     );
