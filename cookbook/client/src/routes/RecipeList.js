@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Icon from "@mdi/react";
-import { mdiMagnify, mdiTable, mdiViewGrid, mdiViewGridCompact, mdiPlus } from "@mdi/js";
+import { mdiMagnify, mdiTable, mdiViewGrid, mdiViewGridCompact, mdiPlus, mdiReload } from "@mdi/js";
 
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
@@ -35,16 +35,17 @@ function RecipeList() {
         state: "pending",
     });
 
-    useEffect(() => {
-        loadJsonData(`http://localhost:8000/recipe/list`, setRecipesLoadCall);
-    }, []);
+    const reloadRecipes = () => loadJsonData(`http://localhost:8000/recipe/list`, setRecipesLoadCall);
+
+    useEffect(reloadRecipes, []);
 
     useEffect(() => {
         loadJsonData(`http://localhost:8000/ingredient/list`, (callData) => {
-        if(callData.data){
-            callData.data.sort((a, b) => a.name.localeCompare(b.name));
-        }    
-        setIngredientsLoadCall(callData)});
+            if (callData.data) {
+                callData.data.sort((a, b) => a.name.localeCompare(b.name));
+            }
+            setIngredientsLoadCall(callData)
+        });
     }, []);
 
     const mergedRecipeList = useMemo(() => {
@@ -108,6 +109,15 @@ function RecipeList() {
         }
     }
 
+    const handlerecipeAdded = (recipe) => {
+        if (recipesLoadCall.state === "success") {
+            setRecipesLoadCall({
+                state: "success",
+                data: [...recipesLoadCall.data, recipe]
+            });
+        }
+    }
+
     return (
         <>
             <Navbar sticky="top" className={`${styles.navbar} ${styles.controlWrapper}`} expand={"sm"}>
@@ -153,7 +163,12 @@ function RecipeList() {
                                 className="text-nowrap m-1"
                                 onClick={() => setCreateRecipeShow(true)}>
                                 <Icon size={1} path={mdiPlus} />
-                                Vytvořit recept
+                                Vytvořit
+                            </Button>
+                            <Button variant="outline-success"
+                                className="text-nowrap m-1"
+                                onClick={reloadRecipes}>
+                                <Icon size={1} path={mdiReload}></Icon>
                             </Button>
                         </Nav>
                     </Offcanvas.Body>
@@ -167,6 +182,7 @@ function RecipeList() {
                 ingredientList={ingredientsLoadCall.data ?? []}
                 show={createRecipeShow}
                 setShow={setCreateRecipeShow}
+                onComplete={(recipe) => handlerecipeAdded(recipe)}
             />}
         </>
     );

@@ -13,12 +13,14 @@
 
 .ingredientRow>*:last-child>* {
     vertical-align: -webkit-baseline-middle;
+    padding: 0;
 }
 
-.deleteButton{    
-    color: var(--bs-danger);
+.smallEditor:invalid,
+.smallEditor:valid {
+    padding-right: 12px !important;
 }
 
-.addButton{    
-    color: var(--bs-success);
+.openImage{
+    color: var(--bs-link-color);
 }

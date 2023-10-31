@@ -4,8 +4,10 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Button } from "react-bootstrap";
-import "./App.css";
+import { ToastContainer } from 'react-toastify';
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 function App() {
   let navigate = useNavigate();
@@ -39,6 +41,13 @@ function App() {
       </Navbar>
 
       <Outlet />
+      <ToastContainer
+        hideProgressBar={true}
+        newestOnTop={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+        theme="dark" />
     </>
   );
 }

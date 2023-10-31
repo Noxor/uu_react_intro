@@ -12,7 +12,7 @@ function RecipeCard(props) {
         <Card className={`${styles.customCard} ${styles[props.size]}`}
             onClick={() => navigate("/recipe?id=" + props.recipe.id)}
             role="button">
-            <Card.Img variant="top" src={props.recipe.imgUri} />
+            <Card.Img variant="top" src={props.recipe.imgUri} className={styles.coverImage}/>
             <Card.Body className={styles.body}>
                 <Card.Title>{props.recipe.name}</Card.Title>
                 <Card.Text className={styles.cardText}>{props.recipe.description}</Card.Text>

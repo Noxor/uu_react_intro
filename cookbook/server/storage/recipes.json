@@ -523,5 +523,23 @@
       }
     ],
     "id": "e6a2450d6d6cd747"
+  },
+  {
+    "name": "Cheeseburger",
+    "imgUri": "https://www.foodiesfeed.com/wp-content/uploads/2023/04/cheeseburger.jpg",
+    "description": "jako burger ale se syrem",
+    "ingredients": [
+      {
+        "id": "0031332354e31780",
+        "amount": 0.1,
+        "unit": "lzice"
+      },
+      {
+        "id": "3ac376e95dcbc246",
+        "amount": 0.13,
+        "unit": "kostka"
+      }
+    ],
+    "id": "9075b2bbc8fc001a"
   }
 ]
