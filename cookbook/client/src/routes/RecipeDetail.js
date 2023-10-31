@@ -1,5 +1,10 @@
+import { useSearchParams } from "react-router-dom";
+
 function RecipeDetail() {
-    return <div>TODO RecipeDetail</div>;
+    let [searchParams] = useSearchParams();
+    const recipeId = searchParams.get("id");
+
+    return <div>TODO RecipeDetail for [{recipeId}] recipe</div>;
 
 }
 

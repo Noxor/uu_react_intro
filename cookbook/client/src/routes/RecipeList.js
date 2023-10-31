@@ -35,7 +35,7 @@ function RecipeList() {
         state: "pending",
     });
 
-    const reloadRecipes = () => loadJsonData(`http://localhost:8000/recipe/list`, setRecipesLoadCall);
+    const reloadRecipes = () => { loadJsonData(`http://localhost:8000/recipe/list`, setRecipesLoadCall) };
 
     useEffect(reloadRecipes, []);
 
