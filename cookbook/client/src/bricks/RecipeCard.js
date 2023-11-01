@@ -18,19 +18,22 @@ function RecipeCard({ recipe, edit, remove, size, showIngedients }) {
             role="button">
             <div className={styles.toolbar}>
                 {typeof edit === 'function' &&
-                    <Button variant="outline-warning" className={styles.toolbarButton}>
+                    <Button variant="outline-warning"
+                        className={styles.toolbarButton}
+                        onClick={(e) => edit(e, recipe.id)}>
                         <Icon
                             path={mdiNoteEditOutline}
                             size={1}
-                            onClick={(e) => edit(e, recipe.id)}
                         />
                     </Button>}
                 {typeof remove === 'function' &&
-                    <Button variant="outline-danger" className={styles.toolbarButton}>
+                    <Button variant="outline-danger"
+                        className={styles.toolbarButton}
+                        onClick={(e) => remove(e, recipe.id)}>
                         <Icon
                             path={mdiDeleteOutline}
                             size={1}
-                            onClick={(e) => remove(e, recipe.id)}
+
                         />
                     </Button>}
             </div>

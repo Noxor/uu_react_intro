@@ -222,11 +222,12 @@ function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group as={Col} className="col-1">
-                    <Button type="submit" variant={extra ? "outline-success" : "outline-danger"}>
+                    <Button type="submit"
+                        variant={extra ? "outline-success" : "outline-danger"}
+                        onClick={() => buttonMethod(ingredient)}>
                         <Icon
                             path={extra ? mdiPlus : mdiDelete}
                             size={1.2}
-                            onClick={() => buttonMethod(ingredient)}
                         />
                     </Button>
                 </Form.Group>
