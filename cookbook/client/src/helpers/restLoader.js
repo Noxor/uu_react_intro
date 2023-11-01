@@ -21,4 +21,33 @@ const loadJsonData = async (url, updateState) => {
     }
 }
 
-export { loadJsonData };
+const performMethod = async (url, payload, onSuccess, onError) => {
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (res.status !== 200) {
+            if (typeof onError === 'function') {
+                onError(data.errorMessage ?? "Unknown Error");
+            }
+
+        } else {
+            if (typeof onSuccess === 'function') {
+                onSuccess();
+            }
+        }
+    } catch (error) {
+        if (typeof onError === 'function') {
+            onError("Unknown Error");
+        }
+    }
+}
+
+export { loadJsonData, performMethod };

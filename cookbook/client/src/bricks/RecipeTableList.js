@@ -3,7 +3,7 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
-function RecipeTableList({ recipeList, edit }) {
+function RecipeTableList({ recipeList, edit, remove }) {
   return (
     <Table>
       <thead>
@@ -12,6 +12,8 @@ function RecipeTableList({ recipeList, edit }) {
           <th>Popis</th>
           {typeof edit === 'function' &&
             <th>Upravit</th>}
+          {typeof remove === 'function' &&
+            <th>Smazat</th>}
         </tr>
       </thead>
       <tbody>
@@ -22,6 +24,8 @@ function RecipeTableList({ recipeList, edit }) {
               <td>{recipe.description}</td>
               {typeof edit === 'function' &&
                 <th><Button variant="link" onClick={(e) => edit(e, recipe.id)}>Upravit</Button></th>}
+              {typeof remove === 'function' &&
+                <th><Button variant="link" onClick={(e) => remove(e, recipe.id)}>Smazat</Button></th>}
             </tr>
           );
         })}

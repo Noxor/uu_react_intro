@@ -24,11 +24,15 @@
     object-fit: cover;
 }
 
-.editButton {
+.toolbar {
     position: absolute;
-    background: rgba(0, 0, 0, .32);
-    backdrop-filter: blur(4px);
     right: calc(var(--bs-gutter-x) * .5);
     top: calc(var(--bs-gutter-x) * .5);
-    ;
+    display: flex;
+    column-gap: calc(var(--bs-gutter-x) * .5);
+}
+
+.toolbarButton {
+    background: rgba(0, 0, 0, .32);
+    backdrop-filter: blur(4px);
 }

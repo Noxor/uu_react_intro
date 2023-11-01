@@ -2,6 +2,8 @@
 import { useEffect, useState, useMemo, useContext } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { toast } from 'react-toastify';
+
 import Icon from "@mdi/react";
 import { mdiMagnify, mdiTable, mdiViewGrid, mdiViewGridCompact, mdiPlus, mdiReload } from "@mdi/js";
 
@@ -18,17 +20,19 @@ import RecipeDetailedList from "../bricks/RecipeDetailedList";
 import RecipeTableList from "../bricks/RecipeTableList";
 import RouteLoaderPlaceholder from "../bricks/RouteLoaderPlaceholder";
 import RecipeForm from "../bricks/RecipeForm";
+import Dialog from "../bricks/Dialog";
 import UserContext from "../UserProvider";
 
-import { loadJsonData } from "../helpers/restLoader";
+import { loadJsonData, performMethod } from "../helpers/restLoader";
 
 import styles from "../css/recipeList.module.css";
 
 function RecipeList() {
-    const { isAuthorized } = useContext(UserContext)
+    const { isAuthorized } = useContext(UserContext);
     const [viewType, setViewType] = useState("detailed");
     const [searchBy, setSearchBy] = useState("");
     const [recipeFormShow, setRecipeFormShow] = useState({ show: false });
+    const [confirmDeleteFormShow, setConfirmDeleteFormShow] = useState({ show: false });
     const [recipesLoadCall, setRecipesLoadCall] = useState({
         state: "pending",
     });
@@ -94,22 +98,26 @@ function RecipeList() {
     function getRecipeListComponent() {
         switch (viewType) {
             case "compact":
-                return (<RecipeCompactList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />);
+                return compactList();
             case "detailed":
-                return (<RecipeDetailedList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />);
+                return detailedList();
             case "table":
                 return (<>
                     <div className="d-none d-sm-block">
-                        <RecipeTableList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />
+                        {tableList()}
                     </div>
                     <div className="d-block d-sm-none">
-                        <RecipeDetailedList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />
+                        {detailedList()}
                     </div>
                 </>);
             default:
-                return (<RecipeDetailedList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} />);
+                return detailedList();
         }
     }
+
+    const compactList = () => (<RecipeCompactList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} remove={getRemoveRecipeFunction()} />);
+    const detailedList = () => (<RecipeDetailedList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} remove={getRemoveRecipeFunction()} />);
+    const tableList = () => (<RecipeTableList recipeList={filteredRecipeList} edit={getEditRecipeFunction()} remove={getRemoveRecipeFunction()} />);
 
     const handleRecipeUpdate = (recipe) => {
         if (recipesLoadCall.state !== "success") {
@@ -133,6 +141,17 @@ function RecipeList() {
         });
     }
 
+    const handleRecipeRemove = (id) => {
+        if (recipesLoadCall.state !== "success") {
+            return;
+        }
+
+        setRecipesLoadCall((prev) => ({
+            state: "success",
+            data: prev.data.filter(r => r.id !== id)
+        }));
+    }
+
     const editRecipe = (e, id) => {
         e.preventDefault();
         e.stopPropagation();
@@ -140,7 +159,23 @@ function RecipeList() {
         setRecipeFormShow({ show: true, recipe: recipesLoadCall.data.find(r => r.id === id) });
     }
 
+    const removeRecipe = (e, id) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setConfirmDeleteFormShow({ show: true, id: id });
+    }
+
+    const callRemove = async (id) => {
+        await performMethod(`http://localhost:8000/recipe/delete`,
+            { id },
+            () => handleRecipeRemove(id),
+            (error) => toast.error(error));
+    }
+
     const getEditRecipeFunction = () => isAuthorized ? editRecipe : null;
+
+    const getRemoveRecipeFunction = () => isAuthorized ? removeRecipe : null;
 
     return (
         <>
@@ -203,13 +238,20 @@ function RecipeList() {
                 <RouteLoaderPlaceholder loadState={combinedStates} />
                 {getRecipeListComponent()}
             </div>
-            {recipeFormShow.show && <RecipeForm
-                ingredientList={ingredientsLoadCall.data ?? []}
-                recipe={recipeFormShow.recipe}
-                show={recipeFormShow.show}
-                setShow={setRecipeFormShow}
-                onComplete={handleRecipeUpdate}
-            />}
+            {recipeFormShow.show &&
+                <RecipeForm
+                    ingredientList={ingredientsLoadCall.data ?? []}
+                    recipe={recipeFormShow.recipe}
+                    show={recipeFormShow.show}
+                    setShow={setRecipeFormShow}
+                    onComplete={handleRecipeUpdate}
+                />}
+            {confirmDeleteFormShow.show &&
+                <Dialog show={confirmDeleteFormShow.show}
+                    title={"Smazat recept"}
+                    text={"Opravdu chcete smazat tento recept?"}
+                    onCancel={() => setConfirmDeleteFormShow({ show: false })}
+                    onConfirm={() => { callRemove(confirmDeleteFormShow.id); setConfirmDeleteFormShow({ show: false }); }} />}
         </>
     );
 }

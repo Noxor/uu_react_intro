@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -5,11 +6,15 @@ import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Button } from "react-bootstrap";
 import { ToastContainer } from 'react-toastify';
+import Icon from "@mdi/react";
+import UserContext from "./UserProvider";
+import { mdiLogin, mdiLogout } from "@mdi/js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 function App() {
+  const { isAuthorized, changeAuthorization } = useContext(UserContext);
   let navigate = useNavigate();
 
   return (
@@ -34,6 +39,13 @@ function App() {
               <Nav className="justify-content-end flex-grow-1">
                 <Button className="m-1" variant="primary" onClick={() => navigate("/recipes")}>Recepty</Button>
                 <Button className="m-1" variant="success" onClick={() => navigate("/ingredients")}>Ingredience</Button>
+                <Button className="m-1" variant="primary">
+                  <Icon
+                    path={isAuthorized ? mdiLogout : mdiLogin}
+                    size={1}
+                    onClick={() => changeAuthorization(!isAuthorized)}
+                  />
+                </Button>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
