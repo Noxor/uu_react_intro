@@ -39,7 +39,7 @@ function App() {
               <Nav className="justify-content-end flex-grow-1">
                 <Button className="m-1" variant="primary" onClick={() => navigate("/recipes")}>Recepty</Button>
                 <Button className="m-1" variant="success" onClick={() => navigate("/ingredients")}>Ingredience</Button>
-                <Button className="m-1" variant="primary" onClick={() => changeAuthorization(!isAuthorized)}>
+                <Button className="m-1" variant="outline-warning" onClick={() => changeAuthorization(!isAuthorized)}>
                   <Icon
                     path={isAuthorized ? mdiLogout : mdiLogin}
                     size={1}

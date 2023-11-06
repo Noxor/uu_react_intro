@@ -8,12 +8,22 @@ import Icon from "@mdi/react";
 import { mdiNoteEditOutline, mdiDeleteOutline } from "@mdi/js";
 
 import styles from "../css/recipeCard.module.css";
+import { ViewType } from "../helpers/constants";
 
 function RecipeCard({ recipe, edit, remove, size, showIngedients }) {
     let navigate = useNavigate();
 
+    const getCardStyle = (viewType)=>{
+        switch (viewType) {
+            case ViewType.Compact:
+                return styles.compact;
+            default:
+                return null;
+        }
+    }
+
     return (
-        <Card className={`${styles.customCard} ${styles[size]}`}
+        <Card className={`${styles.customCard} ${getCardStyle(size)}`}
             onClick={() => navigate("/recipe?id=" + recipe.id)}
             role="button">
             <div className={styles.toolbar}>

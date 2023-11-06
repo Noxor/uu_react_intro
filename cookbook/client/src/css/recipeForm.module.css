@@ -1,5 +1,5 @@
 .ingredientRow>* {
-    padding: 0 5px;
+    padding: 0 2px;
 }
 
 .ingredientRow>*:first-child {
@@ -19,8 +19,4 @@
 .smallEditor:invalid,
 .smallEditor:valid {
     padding-right: 12px !important;
-}
-
-.openImage{
-    color: var(--bs-link-color);
 }

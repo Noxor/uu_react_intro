@@ -45,6 +45,8 @@ function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
     }, [recipe]);
 
     const handleClose = () => {
+        setRecipeValidated(false);
+        setIngredientValidated(false)
         setFormData(defaultForm);
         setExtraIngredient(defaultIngredient);
         setShow({ show: false });
@@ -187,7 +189,7 @@ function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
                                 required
                             >
                                 <option value="" selected="true" disabled="true" >Ingredience</option>
-                                {ingredientList.map(i => (<option value={i.id}>{i.name}</option>))}
+                                {ingredientList.map(i => (<option key={i.id} value={i.id}>{i.name}</option>))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
                                 Vyberte ingredienci
@@ -271,14 +273,13 @@ function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
                             </Form.Group>
                             <Form.Group as={Col} className="col-1">
                                 <Form.Label></Form.Label>
-                                <a href={formData.imgUri}
+                                <Button href={formData.imgUri}
                                     target="_blank"
-                                    rel="noreferrer">
-                                    <Icon className={styles.openImage}
-                                        path={mdiOpenInNew}
+                                    variant="link">
+                                    <Icon path={mdiOpenInNew}
                                         size={1.2}
                                     />
-                                </a>
+                                </Button>
                             </Form.Group>
                         </Row>
                         <Form.Group className="mb-1">

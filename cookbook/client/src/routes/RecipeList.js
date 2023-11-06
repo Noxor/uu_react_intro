@@ -24,12 +24,13 @@ import Dialog from "../bricks/Dialog";
 import UserContext from "../UserProvider";
 
 import { loadJsonData, performMethod } from "../helpers/restLoader";
+import { ViewType } from "../helpers/constants";
 
 import styles from "../css/recipeList.module.css";
 
 function RecipeList() {
     const { isAuthorized } = useContext(UserContext);
-    const [viewType, setViewType] = useState("detailed");
+    const [viewType, setViewType] = useState(ViewType.Detailed);
     const [searchBy, setSearchBy] = useState("");
     const [recipeFormShow, setRecipeFormShow] = useState({ show: false });
     const [confirmDeleteFormShow, setConfirmDeleteFormShow] = useState({ show: false });
@@ -97,11 +98,11 @@ function RecipeList() {
 
     function getRecipeListComponent() {
         switch (viewType) {
-            case "compact":
+            case ViewType.Compact:
                 return compactList();
-            case "detailed":
+            case ViewType.Detailed:
                 return detailedList();
-            case "table":
+            case ViewType.Table:
                 return (<>
                     <div className="d-none d-sm-block">
                         {tableList()}
@@ -208,13 +209,13 @@ function RecipeList() {
                                 className="m-1"
                                 name="view-options"
                                 value={viewType}>
-                                <ToggleButton variant="outline-success" value="detailed" onClick={() => setViewType("detailed")}>
+                                <ToggleButton variant="outline-success" value={ViewType.Detailed} onClick={() => setViewType(ViewType.Detailed)}>
                                     <Icon size={1} path={mdiViewGrid} />
                                 </ToggleButton>
-                                <ToggleButton className="d-none d-sm-block" variant="outline-success" value="table" onClick={() => setViewType("table")}>
+                                <ToggleButton className="d-none d-sm-block" variant="outline-success" value={ViewType.Table} onClick={() => setViewType(ViewType.Table)}>
                                     <Icon size={1} path={mdiTable} />
                                 </ToggleButton>
-                                <ToggleButton variant="outline-success" value="compact" onClick={() => setViewType("compact")}>
+                                <ToggleButton variant="outline-success" value={ViewType.Compact} onClick={() => setViewType(ViewType.Compact)}>
                                     <Icon size={1} path={mdiViewGridCompact} />
                                 </ToggleButton>
                             </ToggleButtonGroup>
@@ -238,20 +239,18 @@ function RecipeList() {
                 <RouteLoaderPlaceholder loadState={combinedStates} />
                 {getRecipeListComponent()}
             </div>
-            {recipeFormShow.show &&
-                <RecipeForm
-                    ingredientList={ingredientsLoadCall.data ?? []}
-                    recipe={recipeFormShow.recipe}
-                    show={recipeFormShow.show}
-                    setShow={setRecipeFormShow}
-                    onComplete={handleRecipeUpdate}
-                />}
-            {confirmDeleteFormShow.show &&
-                <Dialog show={confirmDeleteFormShow.show}
-                    title={"Smazat recept"}
-                    text={"Opravdu chcete smazat tento recept?"}
-                    onCancel={() => setConfirmDeleteFormShow({ show: false })}
-                    onConfirm={() => { callRemove(confirmDeleteFormShow.id); setConfirmDeleteFormShow({ show: false }); }} />}
+            <RecipeForm
+                ingredientList={ingredientsLoadCall.data ?? []}
+                recipe={recipeFormShow.recipe}
+                show={recipeFormShow.show}
+                setShow={setRecipeFormShow}
+                onComplete={handleRecipeUpdate}
+            />
+            <Dialog show={confirmDeleteFormShow.show}
+                title={"Smazat recept"}
+                text={"Opravdu chcete smazat tento recept?"}
+                onCancel={() => setConfirmDeleteFormShow({ show: false })}
+                onConfirm={() => { callRemove(confirmDeleteFormShow.id); setConfirmDeleteFormShow({ show: false }); }} />
         </>
     );
 }
