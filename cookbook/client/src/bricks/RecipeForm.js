@@ -13,19 +13,19 @@ import { mdiDelete, mdiPlus, mdiOpenInNew, mdiLoading } from "@mdi/js";
 
 import styles from "../css/recipeForm.module.css";
 
-function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
-    const defaultForm = {
-        name: "",
-        imgUri: "",
-        description: "",
-        ingredients: [],
-    };
-    const defaultIngredient = {
-        id: "",
-        amount: 0,
-        unit: "",
-    };
+const defaultForm = {
+    name: "",
+    imgUri: "",
+    description: "",
+    ingredients: [],
+};
+const defaultIngredient = {
+    id: "",
+    amount: 0,
+    unit: "",
+};
 
+function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
     const [recipeValidated, setRecipeValidated] = useState(false);
     const [ingredientValidated, setIngredientValidated] = useState(false);
     const [formData, setFormData] = useState(defaultForm);
@@ -177,7 +177,7 @@ function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
                         <Form.Control
                             disabled
                             type="text"
-                            value={ingredientList.find(i => i.id === ingredient.id)?.name ?? "Naznámá ingredience"}
+                            value={ingredientList.find(i => i.id === ingredient.id)?.name ?? "Neznámá ingredience"}
                         />
                     }
                     {extra &&
@@ -206,10 +206,10 @@ function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
                         onChange={(e) => updateMethod(ingredient.id, "amount", parseFloat(e.target.value))}
                         step="0.01"
                         min={0.1}
-                        max={10}
+                        max={1000}
                     />
                     <Form.Control.Feedback type="invalid">
-                        Zadejte množství mezi 0.1 a 10, max 2 desetinny
+                        Zadejte množství mezi 0.1 a 1000, max 2 desetinny
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group as={Col} className="mb-1 col-3">

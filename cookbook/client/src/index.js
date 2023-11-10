@@ -7,7 +7,7 @@ import Home from './routes/Home';
 import RecipeList from "./routes/RecipeList";
 import RecipeDetail from "./routes/RecipeDetail";
 import IngredientList from "./routes/IngredientList";
-import {UserProvider} from "./UserProvider";
+import { UserProvider } from "./UserProvider";
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -21,6 +21,7 @@ root.render(
             <Route path="recipes" element={<RecipeList />} />
             <Route path="recipe" element={<RecipeDetail />} />
             <Route path="ingredients" element={<IngredientList />} />
+            <Route path="*" element={<Home />} />
           </Route>
         </Routes>
       </BrowserRouter>
