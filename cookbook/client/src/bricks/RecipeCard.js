@@ -13,15 +13,6 @@ import { ViewType } from "../helpers/constants";
 function RecipeCard({ recipe, edit, remove, size, showIngedients }) {
     let navigate = useNavigate();
 
-    const getCardStyle = (viewType)=>{
-        switch (viewType) {
-            case ViewType.Compact:
-                return styles.compact;
-            default:
-                return null;
-        }
-    }
-
     return (
         <Card className={`${styles.customCard} ${getCardStyle(size)}`}
             onClick={() => navigate("/recipe?id=" + recipe.id)}
@@ -59,6 +50,15 @@ function RecipeCard({ recipe, edit, remove, size, showIngedients }) {
             }
         </Card>
     );
+}
+
+const getCardStyle = (viewType)=>{
+    switch (viewType) {
+        case ViewType.Compact:
+            return styles.compact;
+        default:
+            return null;
+    }
 }
 
 export default RecipeCard;

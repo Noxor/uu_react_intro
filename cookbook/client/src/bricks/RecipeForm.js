@@ -25,6 +25,8 @@ const defaultIngredient = {
     unit: "",
 };
 
+const copyFormDate = (formData) => ({ ...formData, ingredients: (formData.ingredients ?? []).map(i => ({ ...i })) });
+
 function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
     const [recipeValidated, setRecipeValidated] = useState(false);
     const [ingredientValidated, setIngredientValidated] = useState(false);
@@ -51,8 +53,6 @@ function RecipeForm({ ingredientList, recipe, show, setShow, onComplete }) {
         setExtraIngredient(defaultIngredient);
         setShow({ show: false });
     }
-
-    const copyFormDate = (formData) => ({ ...formData, ingredients: (formData.ingredients ?? []).map(i => ({ ...i })) });
 
     const setMainField = (name, val) => {
         return setFormData((formData) => {

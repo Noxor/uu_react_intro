@@ -4,7 +4,7 @@ import styles from "../css/home.module.css";
 
 const logoPath = "./images/cover.jpg";
 
-function Home(props) {
+function Home() {
     return (
         <header className={styles.appHeader}>
             <img src={logoPath} className={styles.appLogo} alt="logo" />
